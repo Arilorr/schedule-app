@@ -26,7 +26,7 @@ function TagEditor({
 
   const toneCls =
     tone === 'interest'
-      ? 'border-violet-300 bg-violet-500/10 text-violet-700'
+      ? 'border-blue-300 bg-blue-500/10 text-blue-700'
       : tone === 'skill'
         ? 'border-sky-300 bg-sky-500/10 text-sky-700'
         : 'border-emerald-300 bg-emerald-500/10 text-emerald-700';
@@ -107,9 +107,9 @@ export default function AboutMeEditor({ student, onSaved }: { student: StudentDT
   }
 
   return (
-    <Card title="About Me" subtitle="Сонирхол · ур чадвар · зорилго — AI эдгээр дээр үндэслэн боломж хослуулна">
-      <div className="grid gap-4">
-        <TagEditor label="Сонирхол (interests)" placeholder="#DigitalArt гэж бичаад Enter" icon="💜" tone="interest" initial={student.aboutMe.interests} onChange={setInterests} />
+    <Card title="About Me" subtitle="Сонирхол · ур чадвар · зорилго — AI эдгээрт үндэслэн боломж санал болгоно">
+      <div className="grid grid-cols-1 gap-4">
+        <TagEditor label="Сонирхол (interests)" placeholder="#DigitalArt гэж бичээд Enter" icon="💜" tone="interest" initial={student.aboutMe.interests} onChange={setInterests} />
         <TagEditor label="Ур чадвар (skills)" placeholder="Python, Graphic Design…" icon="🧠" tone="skill" initial={student.aboutMe.skills} onChange={setSkills} />
         <TagEditor label="Ажлын зорилго (career goals)" placeholder="UX Designer…" icon="🎯" tone="goal" initial={student.aboutMe.careerGoals} onChange={setGoals} />
       </div>
@@ -144,8 +144,8 @@ export function AddScheduleForm({ studentId, onAdded }: { studentId: string; onA
   }
 
   return (
-    <Card title="Үйл ажиллагаа нэмэх" subtitle="Үлдсэн хоосон цагийг систем ✨ чөлөөт цаг болгож автоматаар тэмдэглэнэ">
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+    <Card title="Үйл ажиллагаа нэмэх" subtitle="Үлдсэн чөлөөт цагийг систем автоматаар тооцоолж тэмдэглэнэ">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <div>
           <span className="label">Өдөр</span>
           <select className="field" value={day} onChange={(e) => setDay(e.target.value)}>

@@ -10,6 +10,25 @@ export const DAY_MN: Record<string, string> = {
   Sunday: 'Ням',
 };
 
+export const STATUS_MN: Record<string, string> = {
+  Balanced: 'Тэнцвэртэй',
+  Manageable: 'Хэвийн',
+  Busy: 'Ачаалалтай',
+  Overworked: 'Хэт ачаалалтай',
+};
+
+export const RISK_MN: Record<string, string> = {
+  Low: 'Бага',
+  Medium: 'Дунд',
+  High: 'Өндөр',
+};
+
+export const LEVEL_MN: Record<string, string> = {
+  School: 'Сургуулийн',
+  National: 'Үндэсний',
+  Global: 'Олон улсын',
+};
+
 /** Status always pairs color with an icon so it survives colorblind/high-contrast modes. */
 export function StatusIcon({ level }: { level: 'ok' | 'warn' | 'danger' }) {
   if (level === 'ok') return <span aria-label="Зөв / Сайн">✅</span>;
@@ -159,18 +178,18 @@ export function GaugeDial({ score }: { score: number }) {
       </svg>
       <div className="absolute inset-x-0 bottom-0 flex flex-col items-center">
         <span className={`text-3xl font-extrabold tabular-nums tracking-tight ${LEVEL_TEXT[level]}`}>{score.toFixed(1)}</span>
-        <span className="text-[10px] font-semibold uppercase tracking-widest text-muted">workload / 10</span>
+        <span className="text-[10px] font-semibold uppercase tracking-widest text-muted">Ачаалал / 10</span>
       </div>
     </div>
   );
 }
 
 /** Friendly AI coach avatar with a speech bubble. */
-export function CoachCard({ children, title = 'Gemma AI coach' }: { children: ReactNode; title?: string }) {
+export function CoachCard({ children, title = 'Gemma AI зөвлөх' }: { children: ReactNode; title?: string }) {
   return (
     <div className="flex items-start gap-3">
       <div className="relative shrink-0">
-        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 text-xl shadow-md">
+        <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-blue-700 text-xl shadow-md">
           <span aria-hidden>🤖</span>
         </div>
         <span className="absolute -bottom-0.5 -right-0.5 flex h-3 w-3">
@@ -189,7 +208,7 @@ export function CoachCard({ children, title = 'Gemma AI coach' }: { children: Re
 /** Mini category icon for schedule activities. */
 export function catIcon(activity: string): string {
   const a = activity.toLowerCase();
-  if (/basket|football|sport|judо|judo|tournament|swim|gym/.test(a)) return '🏀';
+  if (/basket|football|sport|judo|tournament|swim|gym/.test(a)) return '🏀';
   if (/math|physics|chem|tutor|calc|science/.test(a)) return '📚';
   if (/art|design|draw|paint|mural/.test(a)) return '🎨';
   if (/music|piano|choir|concert/.test(a)) return '🎵';

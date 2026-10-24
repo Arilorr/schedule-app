@@ -26,7 +26,7 @@ export default function ScheduleGrid({
       <div className="overflow-x-auto rounded-xl border border-line/70">
         <table className="w-full min-w-[820px] border-collapse text-xs" aria-label="Долоо хоногийн хуваарь">
           <thead>
-            <tr className="bg-gradient-to-r from-indigo-600/5 to-violet-600/5">
+            <tr className="bg-page/80">
               <th className="w-14 border-b border-r border-line/60 px-2 py-2.5 text-[10px] font-bold uppercase tracking-widest text-muted">
                 Цаг
               </th>

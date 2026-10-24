@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { DAYS } from '../../shared/types';
 import { M, Q, type AnalysisDTO, type ClassRowDTO, type OpportunityDTO, type ScheduleItemDTO, type StudentDTO } from '../api';
 import ScheduleGrid from './ScheduleGrid';
-import { Card, CoachCard, DAY_MN, Pill, ScoreBadge, StatusIcon, scoreLevel, useToast } from './shared';
+import { Card, CoachCard, DAY_MN, LEVEL_MN, Pill, RISK_MN, STATUS_MN, ScoreBadge, StatusIcon, scoreLevel, useToast } from './shared';
 
 const LEVELS = ['School', 'National', 'Global'];
 
@@ -40,13 +40,13 @@ export default function TeacherView({ students, initialStudentId }: { students: 
   useEffect(() => { reload(); }, [reload]);
 
   return (
-    <div className="grid gap-5">
+    <div className="grid grid-cols-1 gap-5">
       <Card
-        title="Workload Index — анги"
+        title="Ачааллын индекс — анги"
         subtitle="Gemma AI-ийн ачааллын оноо (1–10) · мөр дээр дарж сурагч сонгоно"
         actions={<Pill tone="info"><span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ok opacity-70" /><span className="relative inline-flex h-2 w-2 rounded-full bg-ok" /></span> {aiBackend}</Pill>}
       >
-        <div className="grid gap-2.5 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2">
           {rows.map((r, i) => (
             <button
               key={r.studentId}
@@ -58,17 +58,17 @@ export default function TeacherView({ students, initialStudentId }: { students: 
               }`}
               style={{ animationDelay: `${i * 60}ms` }}
             >
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 text-sm font-extrabold text-white shadow-sm">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-700 text-sm font-extrabold text-white shadow-sm">
                 {r.studentName.split(' ')[0]?.[0]}
               </span>
               <span className="min-w-0 flex-1">
                 <span className="block truncate text-sm font-bold">{r.studentName}</span>
-                <span className="block text-[11px] font-medium text-muted">{r.grade} · {r.status}</span>
+                <span className="block text-[11px] font-medium text-muted">{r.grade} · {STATUS_MN[r.status] ?? r.status}</span>
               </span>
               <MiniGauge score={r.workloadScore} />
               <ScoreBadge score={r.workloadScore} />
               <Pill tone={r.stressRisk === 'High' ? 'bad' : r.stressRisk === 'Medium' ? 'info' : 'good'}>
-                <StatusIcon level={r.stressRisk === 'High' ? 'danger' : r.stressRisk === 'Medium' ? 'warn' : 'ok'} /> {r.stressRisk}
+                <StatusIcon level={r.stressRisk === 'High' ? 'danger' : r.stressRisk === 'Medium' ? 'warn' : 'ok'} /> {RISK_MN[r.stressRisk] ?? r.stressRisk}
               </Pill>
             </button>
           ))}
@@ -76,16 +76,16 @@ export default function TeacherView({ students, initialStudentId }: { students: 
       </Card>
 
       {analysis && (
-        <div className="grid gap-5 lg:grid-cols-2">
-          <Card title={`AI зөвлөмж — ${analysis.studentName}`} subtitle="Давхцал болон хугацааны шийдвэрт туслах санал">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
+          <Card title={`AI зөвлөмж — ${analysis.studentName}`} subtitle="Давхцал ба хугацааны шийдвэр гаргахад туслах саналууд">
             <CoachCard>
-              <p className="font-semibold">⚠️ Хугацаа сунгах / хуваарь:</p>
+              <p className="font-semibold">⚠️ Хугацаа сунгах санал:</p>
               <p className="mt-1">{analysis.teacherRecommendations.deadlineAdjustments}</p>
               <p className="mt-3 font-semibold">📖 Шалгалтын бэлтгэл:</p>
               <p className="mt-1">{analysis.teacherRecommendations.examPrepAdvice}</p>
             </CoachCard>
             {analysis.academicProgress.scheduleConflicts.length > 0 && (
-              <ul className="mt-4 grid gap-2">
+              <ul className="mt-4 grid grid-cols-1 gap-2">
                 {analysis.academicProgress.scheduleConflicts.map((c, i) => (
                   <li key={i} className="rounded-xl border border-danger/30 bg-danger/5 px-3 py-2 text-xs">
                     <span className="font-bold"><StatusIcon level="warn" /> {c.examOrAssignment}</span>
@@ -96,22 +96,22 @@ export default function TeacherView({ students, initialStudentId }: { students: 
               </ul>
             )}
           </Card>
-          <Card title="Сурагчийн хуваарь" subtitle="Давхцал шалгах нүд">
+          <Card title="Сурагчийн хуваарь" subtitle="Давхцал шалгах зорилгоор">
             <ScheduleGrid items={schedule} />
           </Card>
         </div>
       )}
 
-      <div className="grid gap-5 lg:grid-cols-2">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <PostWorkForm studentId={studentId} students={students} onPosted={reload} />
         <PostOpportunityForm onPosted={reload} />
       </div>
 
-      <Card title="Opportunity Directory" subtitle="Нийтлэгдсэн боломжууд">
-        <ul className="grid gap-2">
+      <Card title="Боломжуудын жагсаалт" subtitle="Нийтлэгдсэн боломжууд">
+        <ul className="grid grid-cols-1 gap-2">
           {opps.map((o) => (
             <li key={o.id} className="lift flex flex-wrap items-center gap-3 rounded-xl border border-line bg-surface px-4 py-3">
-              <Pill tone={o.level === 'Global' ? 'good' : o.level === 'National' ? 'info' : 'neutral'}>{o.level}</Pill>
+              <Pill tone={o.level === 'Global' ? 'good' : o.level === 'National' ? 'info' : 'neutral'}>{LEVEL_MN[o.level] ?? o.level}</Pill>
               <strong className="text-sm">{o.title}</strong>
               <span className="ml-auto text-xs font-medium text-muted">
                 {o.organizer} · {DAY_MN[o.day]} {o.timeSlot} · {o.requiredSkills.join(', ')}
@@ -145,13 +145,13 @@ function PostWorkForm({ studentId, students, onPosted }: { studentId: string; st
   }
 
   return (
-    <Card title="Даалгавар / шалгалт нийтлэх" subtitle="Сурагчийн календарь шууд шинэчлэгдэнэ">
+    <Card title="Даалгавар / шалгалт нийтлэх" subtitle="Сурагчийн хуваарь шууд шинэчлэгдэнэ">
       <div className="seg mb-4 max-w-xs" style={{ gridTemplateColumns: '1fr 1fr' }}>
         <span className="seg-indicator" style={{ width: 'calc((100% - 0.5rem)/2)', transform: `translateX(${mode === 'assignment' ? 0 : 100}%)` }} aria-hidden />
         <button className={`seg-btn ${mode === 'assignment' ? 'active' : ''}`} onClick={() => setMode('assignment')}>📚 Даалгавар</button>
         <button className={`seg-btn ${mode === 'exam' ? 'active' : ''}`} onClick={() => setMode('exam')}>📝 Шалгалт</button>
       </div>
-      <div className="grid gap-3 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
           <span className="label">Сурагч</span>
           <select className="field" value={sid} onChange={(e) => setSid(e.target.value)}>
@@ -213,8 +213,8 @@ function PostOpportunityForm({ onPosted }: { onPosted: () => void }) {
   }
 
   return (
-    <Card title="Opportunity Directory-д нэмэх" subtitle="Ур чадвар · цаг · хамрах хүрээг тодорхойлно">
-      <div className="grid gap-3 sm:grid-cols-2">
+    <Card title="Боломж нэмэх" subtitle="Ур чадвар · цаг · хамрах хүрээг тодорхойлно">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div>
           <span className="label">Гарчиг</span>
           <input className="field" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Summer coding camp mentor" />
@@ -224,7 +224,7 @@ function PostOpportunityForm({ onPosted }: { onPosted: () => void }) {
           <input className="field" value={organizer} onChange={(e) => setOrganizer(e.target.value)} placeholder="NGO / Club / School" />
         </div>
         <div className="sm:col-span-2">
-          <span className="label">Шаардлагатай ур чадварууд</span>
+          <span className="label">Шаардлагатай ур чадвар</span>
           <input className="field" value={skills} onChange={(e) => setSkills(e.target.value)} placeholder="Python, Public Speaking" />
         </div>
         <div>

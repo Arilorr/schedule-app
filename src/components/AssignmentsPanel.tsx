@@ -1,7 +1,7 @@
 import { M, type AssignmentDTO, type ExamDTO } from '../api';
 import { Card, Donut, StatusIcon, fmtDate } from './shared';
 
-const CONFETTI_COLORS = ['#6366f1', '#8b5cf6', '#10b981', '#f59e0b', '#f43f5e', '#0ea5e9'];
+const CONFETTI_COLORS = ['#2563eb', '#0ea5e9', '#10b981', '#f59e0b', '#f43f5e', '#14b8a6'];
 
 function Confetti() {
   return (
@@ -42,24 +42,24 @@ export default function AssignmentsPanel({
   }
 
   return (
-    <div className="grid gap-5 lg:grid-cols-5">
-      <Card className="relative overflow-hidden lg:col-span-2" title="Академик дэвшил" subtitle="Гүйцэтгэсэн даалгаварт үндэслэн автоматаар тооцно">
+    <div className="grid grid-cols-1 gap-5 lg:grid-cols-5">
+      <Card className="relative overflow-hidden lg:col-span-2" title="Хичээлийн дэвшил" subtitle="Гүйцэтгэсэн даалгавраас автоматаар тооцоолно">
         {pct === 100 && assignments.length > 0 && <Confetti />}
         <div className="flex items-center gap-5">
-          <Donut pct={pct} label="биелэлт" />
+          <Donut pct={pct} label="Биелэлт" />
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold">
               {done}<span className="text-muted">/{assignments.length} даалгавар</span>
             </p>
             <div className="mt-2 h-2.5 overflow-hidden rounded-full bg-line/70">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-500 ease-out"
+                className="h-full rounded-full bg-emerald-600 transition-all duration-500 ease-out"
                 style={{ width: `${pct}%` }}
               />
             </div>
             {pct === 100 && assignments.length > 0 ? (
               <p className="animate-pop mt-3 inline-flex items-center gap-1.5 rounded-full border border-ok/40 bg-ok/10 px-3 py-1 text-xs font-bold text-ok">
-                🎉 Гайхалтай! Бүгд дууссан — чөлөөт цагаа үр дүнтэй үдээрэй
+                🎉 Гайхалтай! Бүгд дууссан — чөлөөт цагаа сайн өнгөрөөрэй!
               </p>
             ) : (
               <p className="mt-3 text-xs leading-relaxed text-muted">
@@ -69,7 +69,7 @@ export default function AssignmentsPanel({
           </div>
         </div>
 
-        <ul className="mt-5 grid gap-2">
+        <ul className="mt-5 grid grid-cols-1 gap-2">
           {assignments.map((a) => {
             const overdue = !a.isCompleted && a.dueDate < today;
             return (
@@ -111,10 +111,10 @@ export default function AssignmentsPanel({
       </Card>
 
       <Card className="lg:col-span-3" title="Шалгалтын хуваарь" subtitle="Багшийн товлосон шалгалтууд">
-        <ul className="grid gap-2.5 sm:grid-cols-2">
+        <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
           {exams.map((e) => (
             <li key={e.id} className="lift flex items-center gap-3 rounded-xl border border-line bg-surface p-3.5">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 text-lg shadow-sm" aria-hidden>
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-500 text-lg shadow-sm" aria-hidden>
                 📝
               </span>
               <div className="min-w-0">

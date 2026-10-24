@@ -50,17 +50,17 @@ export default function StudentView({ student }: { student: StudentDTO }) {
     : 0;
 
   return (
-    <div className="grid gap-5">
+    <div className="grid grid-cols-1 gap-5">
       {/* Hero */}
       <section className="glass relative overflow-hidden p-5">
-        <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-gradient-to-br from-indigo-500/20 to-violet-500/20 blur-2xl" aria-hidden />
+        <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full bg-gradient-to-br from-blue-500/10 to-sky-400/10 blur-2xl" aria-hidden />
         <div className="relative flex flex-wrap items-center gap-x-8 gap-y-4">
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-center gap-2">
               <h2 className="text-xl font-extrabold tracking-tight">Сайн уу, {student.name.split(' ')[0]}! 👋</h2>
               {verified.isScheduleApproved ? (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-ok/40 bg-ok/10 px-2.5 py-1 text-[11px] font-bold text-ok">
-                  <StatusIcon level="ok" /> Эцэг эх баталгаажуулсан · {verified.approvedDate}
+                  <StatusIcon level="ok" /> Эцэг эх зөвшөөрсөн · {verified.approvedDate}
                 </span>
               ) : (
                 <span className="inline-flex items-center gap-1.5 rounded-full border border-warn/40 bg-warn/10 px-2.5 py-1 text-[11px] font-bold text-warn">
@@ -78,7 +78,7 @@ export default function StudentView({ student }: { student: StudentDTO }) {
               <Donut pct={pct} size={84} />
               <div className="text-xs font-semibold text-muted">
                 <p className="text-ink">{assignments.filter((a) => a.isCompleted).length}/{assignments.length} даалгавар</p>
-                <p>биелэлт</p>
+                <p>гүйцэтгэсэн</p>
               </div>
             </div>
             {analysis && (
@@ -98,7 +98,7 @@ export default function StudentView({ student }: { student: StudentDTO }) {
             onClick={() => setTab(t.id)}
             className={`rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 ${
               tab === t.id
-                ? 'bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-md'
+                ? 'bg-blue-700 text-white shadow-md'
                 : 'border border-line bg-surface/70 text-muted hover:-translate-y-px hover:border-accent/50 hover:text-ink hover:shadow-sm'
             }`}
           >
@@ -107,10 +107,10 @@ export default function StudentView({ student }: { student: StudentDTO }) {
         ))}
       </nav>
 
-      <div key={tab} className="animate-rise grid gap-5">
+      <div key={tab} className="animate-rise grid grid-cols-1 gap-5">
         {tab === 'schedule' && (
           <>
-            <Card title="Долоо хоногийн хуваарь" subtitle="Үлдсэн хоосон цаг автоматаар ✨ Available Free Time болно">
+            <Card title="Долоо хоногийн хуваарь" subtitle="Бүртгэгдээгүй үлдсэн цагууд автоматаар чөлөөт цаг болж тэмдэглэгдэнэ">
               <ScheduleGrid items={schedule} editable onRemove={removeItem} />
             </Card>
             <AddScheduleForm studentId={student.id} onAdded={reload} />

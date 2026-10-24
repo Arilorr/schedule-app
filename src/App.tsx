@@ -36,15 +36,12 @@ function Shell() {
       <header className="glass sticky top-4 z-40 mb-6 px-5 py-4">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 to-violet-600 text-lg shadow-md">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-blue-700 text-lg shadow-md">
               <span aria-hidden>⚖️</span>
             </div>
             <div className="min-w-0">
               <h1 className="truncate text-lg font-extrabold tracking-tight">
-                erxes{' '}
-                <span className="bg-gradient-to-r from-indigo-600 to-violet-600 bg-clip-text text-transparent">
-                  BalanceEd
-                </span>
+                erxes <span className="text-blue-700">BalanceEd</span>
               </h1>
               <p className="truncate text-[11px] font-medium text-muted">
                 Сурагчийн ачааллыг тэнцвэржүүлэх EdTech plugin
@@ -98,17 +95,17 @@ function Shell() {
             className={`chip cursor-pointer transition-all duration-200 hover:border-accent/60 hover:shadow-sm ${highContrast ? 'border-accent bg-accent/10 text-accent' : ''}`}
             onClick={() => toggle('highContrast')}
             aria-pressed={highContrast}
-            title="Өндөр тодосгогч (High Contrast)"
+            title="Өндөр контраст (High Contrast)"
           >
-            ◐ Тодосгогч
+            ◐ Өндөр контраст
           </button>
           <button
             className={`chip cursor-pointer transition-all duration-200 hover:border-accent/60 hover:shadow-sm ${colorblind ? 'border-accent bg-accent/10 text-accent' : ''}`}
             onClick={() => toggle('colorblind')}
             aria-pressed={colorblind}
-            title="Өнгөний сохор горим — бүх төлөв ✅ ⚠️ 🔴 дүрсээр давхар тэмдэглэгдэнэ"
+            title="Өнгө ялгахад ээлтэй горим — бүх төлөв ✅ ⚠️  тэмдэгтээр давхар харагдана"
           >
-            ⚠️ Өнгөний сохор
+            ⚠️ Өнгөний сохорт ээлтэй
           </button>
           <button
             className={`chip cursor-pointer transition-all duration-200 hover:border-accent/60 hover:shadow-sm ${dyslexiaFont ? 'border-accent bg-accent/10 text-accent' : ''}`}

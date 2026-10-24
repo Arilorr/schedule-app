@@ -93,6 +93,13 @@ function statusFromScore(score: number): string {
   return 'Overworked';
 }
 
+const STATUS_MN: Record<string, string> = {
+  Balanced: 'тэнцвэртэй',
+  Manageable: 'хэвийн',
+  Busy: 'ачаалалтай',
+  Overworked: 'хэт ачаалалтай',
+};
+
 const DAY_MN: Record<Day, string> = {
   Monday: 'Даваа',
   Tuesday: 'Мягмар',
@@ -140,8 +147,8 @@ export function matchOpportunities(student: StudentProfile): OpportunityWithMatc
       if (matchedSkills.length) why.push(`ур чадвар (${matchedSkills.join(', ')})`);
       if (interestHit) why.push(`сонирхол (${student.aboutMe.interests[0] ?? '—'})`);
       const reason = why.length
-        ? `Таны ${why.join(' болон ')}-тай таарч, ${DAY_MN[opp.day]} гарагийн чөлөөт цаг (${opp.timeSlot} завсарт багтах)-т зохицож байна.`
-        : `Шууд ур чадварын нийц бага ч ${DAY_MN[opp.day]} гарагийн чөлөөт цаг (${opp.timeSlot} завсарт багтах)-д багтах тул шинэ ур чадвар эзэмших боломж.`;
+        ? `Таны ${why.join(' болон ')}-тай нийцэж, ${DAY_MN[opp.day]} гарагийн ${opp.timeSlot} чөлөөт цагт багтаж байна.`
+        : `Шууд ур чадварын нийц багатай ч ${DAY_MN[opp.day]} гарагийн ${opp.timeSlot} чөлөөт цагт багтах тул шинэ ур чадвар эзэмшихэд тохиромжтой.`;
       return { ...opp, matchScore: `${score}%`, matchReasonMongolian: reason };
     })
     .sort((a, b) => parseInt(b.matchScore) - parseInt(a.matchScore));
@@ -172,7 +179,7 @@ function detectConflicts(
       conflicts.push({
         examOrAssignment: `${exam.subject} шалгалт`,
         date: exam.examDate,
-        conflictDescriptionMongolian: `${exam.subject} шалгалт (${exam.examDate}) нь ${DAY_MN[day]} гарагт төлөвлөгдсөн бөгөөд тухайн өдөр ${hours.toFixed(1)} цагийн хичээлээс гадуурх үйл ажиллагаатай давхцаж, ачааллыг нэмэгдүүлж байна.`,
+        conflictDescriptionMongolian: `${exam.subject} шалгалт (${exam.examDate}) ${DAY_MN[day]} гарагт товлогдсон бөгөөд тэр өдөр ${hours.toFixed(1)} цагийн хичээлээс гадуурх ачаалалтай давхцаж байна.`,
       });
     }
   }
@@ -183,7 +190,7 @@ function detectConflicts(
       conflicts.push({
         examOrAssignment: a.title,
         date: a.dueDate,
-        conflictDescriptionMongolian: `"${a.title}" даалгаврын хугацаа (${a.dueDate}) нь ${DAY_MN[day]} гарагийн ${hours.toFixed(1)} цагийн ачаалалтай үйл ажиллагаатай давхцаж байна.`,
+        conflictDescriptionMongolian: `"${a.title}" даалгаврын хугацаа (${a.dueDate}) ${DAY_MN[day]} гарагийн ${hours.toFixed(1)} цагийн ачаалалтай давхцаж байна.`,
       });
     }
   }
@@ -247,12 +254,12 @@ export async function buildWorkloadAnalysis(student: StudentProfile) {
 
   const aiSummaryMongolian =
     ai.aiSummaryMongolian ??
-    `${student.name}-ын долоо хоногийн ачаалал ${score}/10 (${status}) байна. Нийт ${totalActivityHours.toFixed(1)} цаг хичээлээс гадуурх үйл ажиллагаа, ${pendingSoon} гүйцэтгээгүй даалгавар, ${upcomingExams.length} шалгалт төлөвлөгдсөн. Стрессийн эрсдэл: ${stressRisk === 'High' ? 'Өндөр' : stressRisk === 'Medium' ? 'Дунд' : 'Бага'}. ${conflicts.length ? 'Хуваарьт давхцал илэрсэн тул зарим даалгаврын хугацааг хойшлуулахыг зөвлөж байна.' : 'Хуваарьт ноцтой давхцал алга.'}`;
+    `${student.name} сурагчийн долоо хоногийн ачаалал ${score}/10 (${STATUS_MN[status] ?? status}) байна. Нийт ${totalActivityHours.toFixed(1)} цаг хичээлээс гадуурх үйл ажиллагаа, ${pendingSoon} гүйцэтгээгүй даалгавар, ${upcomingExams.length} шалгалт төлөвлөгдсөн. Стрессийн эрсдэл: ${stressRisk === 'High' ? 'Өндөр' : stressRisk === 'Medium' ? 'Дунд' : 'Бага'}. ${conflicts.length ? 'Хуваарьт давхцал илэрсэн тул зарим даалгаврын хугацааг хойшлуулахыг зөвлөж байна.' : 'Хуваарьт ноцтой давхцал алга.'}`;
 
   const deadlineAdjustments =
     ai.deadlineAdjustments ??
     (conflicts.length
-      ? `"${conflicts[0].examOrAssignment}" (${conflicts[0].date})-ийн хугацааг хамгийн их ачаалалтай өдрөөс хойш 2 хоногоор сунгахыг зөвлөж байна.`
+      ? `${conflicts[0].examOrAssignment} (${conflicts[0].date}) хугацааг хамгийн их ачаалалтай өдрөөс хойш хоёр хоног сунгахыг зөвлөж байна.`
       : 'Одоогоор хугацаа сунгах шаардлагагүй — хуваарь тэнцвэртэй байна.');
 
   const examPrepAdvice =
@@ -263,7 +270,7 @@ export async function buildWorkloadAnalysis(student: StudentProfile) {
 
   const progressSummaryMongolian =
     ai.progressSummaryMongolian ??
-    `Таны хүүхэд ${total} даалгавраас ${completed}-г гүйцэтгэж, ${completionPercentage}%-ийн биелэлттэй байна. ${upcomingExams.length ? `Удахгүй ${upcomingExams.map((e) => `${e.subject} (${e.examDate})`).join(', ')} шалгалт байна. ` : ''}Ачааллын оноо ${score}/10, стрессийн эрсдэл ${stressRisk === 'High' ? 'өндөр' : stressRisk === 'Medium' ? 'дунд' : 'бага'} түвшинд байна.`;
+    `Таны хүүхэд ${total} даалгавраас ${completed}-г гүйцэтгэсэн (${completionPercentage}% биелэлт). ${upcomingExams.length ? `Удахгүй ${upcomingExams.map((e) => `${e.subject} (${e.examDate})`).join(', ')} шалгалт байна. ` : ''}Ачааллын оноо ${score}/10, стрессийн эрсдэл ${stressRisk === 'High' ? 'өндөр' : stressRisk === 'Medium' ? 'дунд' : 'бага'} түвшинд байна.`;
 
   return {
     studentName: student.name,
